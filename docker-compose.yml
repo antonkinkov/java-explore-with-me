@@ -1,15 +1,62 @@
-version: '3.1'
+version: '3.8'
 services:
-  stats-server:
+  main-module:
+    build: main-module
+    image: main-module
+    container_name: main-module
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+    environment:
+      - SHAREIT_SERVER_URL=http://server:9090
+
+  main-module:
+    build: ./main-module
+    container_name: main-module
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - stats-module
+    environment:
+      - STATS_SERVER_URL=http://stats-module:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/main
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  stats-module:
+    build: ./stats-module/stats-module
+    container_name: stats-module
     ports:
       - "9090:9090"
+    depends_on:
+      - stats-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
   stats-db:
     image: postgres:14-alpine
-
-  ewm-service:
+    container_name: stats-db
     ports:
-      - "8080:8080"
+      - "6541:5432"
+    volumes:
+      - stats-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=stats
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
-  ewm-db:
-    image: postgres:14-alpine
+  db:
+      image: postgres:13.7-alpine
+      container_name: explore-db
+      ports:
+        - "6542:5432"
+      volumes:
+        - db:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_DB=ewm
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
