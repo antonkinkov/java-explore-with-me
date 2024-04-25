@@ -1,15 +1,15 @@
 version: '3.8'
 services:
-  main-module:
-    build: main-module
-    image: main-module
-    container_name: main-module
-    ports:
-      - "8080:8080"
-    depends_on:
-      - server
-    environment:
-      - SHAREIT_SERVER_URL=http://server:9090
+#  main-module:
+#    build: main-module
+#    image: main-module
+#    container_name: main-module
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - server
+#    environment:
+#      - SHAREIT_SERVER_URL=http://server:9090
 
   main-module:
     build: ./main-module
