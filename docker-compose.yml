@@ -1,16 +1,5 @@
 version: '3.8'
 services:
-#  main-module:
-#    build: main-module
-#    image: main-module
-#    container_name: main-module
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - server
-#    environment:
-#      - SHAREIT_SERVER_URL=http://server:9090
-
   main-module:
     build: ./main-module
     container_name: main-module
@@ -22,8 +11,8 @@ services:
     environment:
       - STATS_SERVER_URL=http://stats-module:9090
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/main
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=2860
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
   stats-module:
     build: ./stats-module/stats-module
@@ -34,8 +23,8 @@ services:
       - stats-db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=2860
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
   stats-db:
     image: postgres:14-alpine
@@ -46,8 +35,8 @@ services:
       - stats-db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=stats
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=2860
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
   db:
     image: postgres:13.7-alpine
@@ -58,5 +47,5 @@ services:
       - db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=ewm
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=2860
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
