@@ -16,7 +16,7 @@
         <module>stats_dto</module>
     </modules>
 
-    <artifactId>stats-server</artifactId>
+    <artifactId>stats-module</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>ru.practicum.stats_service</groupId>
-    <artifactId>stats_server</artifactId>
+    <artifactId>stats_module</artifactId>
     <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
