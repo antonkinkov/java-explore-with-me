@@ -18,7 +18,7 @@ public class StatsMapper {
                 .build();
     }
 
-    public static StatsDto toDto(Stats stats){
+    public static StatsDto toDto(Stats stats) {
         return StatsDto.builder()
                 .hits(stats.getHits())
                 .app(stats.getApp())

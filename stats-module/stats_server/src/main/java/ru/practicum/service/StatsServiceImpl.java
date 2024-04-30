@@ -10,7 +10,6 @@ import ru.practicum.model.Stats;
 import ru.practicum.repository.StatsRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +50,7 @@ public class StatsServiceImpl implements StatsService {
         return uris.isEmpty() ? getAllWithoutUri(start, end) : repository.getStatsWithUrls(start, end, uris);
     }
 
-    private List<Stats> getAllWithoutUri(LocalDateTime start, LocalDateTime end){
+    private List<Stats> getAllWithoutUri(LocalDateTime start, LocalDateTime end) {
         return repository.getStats(start, end);
     }
 
