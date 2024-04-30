@@ -25,7 +25,7 @@ services:
       - POSTGRES_PASSWORD=root
 
   stats-module:
-    build: ./stats-module
+    build: ./stats-module/stats-server
     container_name: stats-server
     ports:
       - "9090:9090"
