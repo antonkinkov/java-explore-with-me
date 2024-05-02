@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ru.practicum</groupId>
-        <artifactId>stats-server</artifactId>
+        <artifactId>stats_module</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>ru.practicum.stats_service</groupId>
-    <artifactId>stats_module</artifactId>
+    <artifactId>stats_server</artifactId>
     <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
