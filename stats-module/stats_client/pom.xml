@@ -9,7 +9,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-<!--    <groupId>ru.practicum.stats_service</groupId>-->
     <artifactId>stats_client</artifactId>
 
     <properties>
@@ -45,13 +44,6 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
-        <!--        <dependency>-->
-<!--            <groupId>ru.practicum.stats_service</groupId>-->
-<!--            <artifactId>stats_dto</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
     </dependencies>
 
 </project>

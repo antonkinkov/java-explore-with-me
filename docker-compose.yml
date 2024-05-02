@@ -14,7 +14,7 @@ services:
       - POSTGRES_PASSWORD=root
 
   main-db:
-    image: postgres:14-alpine
+    image: postgres:13.7-alpine
     container_name: main-db
     volumes:
       - /var/lib/postgresql/data
@@ -39,7 +39,7 @@ services:
       - POSTGRES_PASSWORD=root
 
   stats-db:
-    image: postgres:14-alpine
+    image: postgres:13.7-alpine
     container_name: stats-db
     volumes:
       - /var/lib/postgresql/data
