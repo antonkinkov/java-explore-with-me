@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>ru.practicum.stats_service</groupId>
+<!--    <groupId>ru.practicum.stats_service</groupId>-->
     <artifactId>stats_server</artifactId>
     <packaging>jar</packaging>
     <properties>
