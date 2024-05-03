@@ -2,14 +2,14 @@ version: '3.8'
 services:
   ewm-service:
     build: main-module
-    image: main-module-image
-    container_name: main-module
+    image: ewm-service-image
+    container_name: ewm-service
     ports:
       - "8080:8080"
     depends_on:
       - ewm-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm-db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
 
@@ -21,20 +21,20 @@ services:
     ports:
       - "6542:5432"
     environment:
-      - POSTGRES_DB=ewm-db
+      - POSTGRES_DB=ewm
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
 
   stats-server:
     build: stats-module/stats_server
-    image: stats-server-image
-    container_name: stats-module
+    image: stats-service-image
+    container_name: stats-server
     ports:
       - "9090:9090"
     depends_on:
       - stats-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5431/stats-db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5431/stats
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
 
@@ -46,6 +46,6 @@ services:
     ports:
       - "6541:5431"
     environment:
-      - POSTGRES_DB=stats-db
+      - POSTGRES_DB=stats
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
