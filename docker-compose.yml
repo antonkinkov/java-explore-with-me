@@ -25,10 +25,10 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
 
-  stats-module:
+  stats-server:
     build: stats-module/stats_server
     image: stats-server-image
-    container_name: stats-module
+    container_name: stats-server
     ports:
       - "9090:9090"
     depends_on:
