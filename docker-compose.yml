@@ -1,34 +1,34 @@
 version: '3.8'
 services:
-#  main-module:
-#    build: main-module
-#    image: main-module-image
-#    container_name: main-module
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - main-db
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main
-#      - POSTGRES_USER=root
-#      - POSTGRES_PASSWORD=root
-#
-#  main-db:
-#    image: postgres:13.7-alpine
-#    container_name: main-db
-#    volumes:
-#      - /var/lib/postgresql/data
-#    ports:
-#      - "6542:5432"
-#    environment:
-#      - POSTGRES_DB=main
-#      - POSTGRES_USER=root
-#      - POSTGRES_PASSWORD=root
+  main-module:
+    build: main-module
+    image: main-module-image
+    container_name: main-module
+    ports:
+      - "8080:8080"
+    depends_on:
+      - main-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
 
-  stats-server:
+  main-db:
+    image: postgres:13.7-alpine
+    container_name: main-db
+    volumes:
+      - /var/lib/postgresql/data
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_DB=main
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  stats-module:
     build: stats-module/stats_server
     image: stats-server-image
-    container_name: stats-server
+    container_name: stats-module
     ports:
       - "9090:9090"
     depends_on:
