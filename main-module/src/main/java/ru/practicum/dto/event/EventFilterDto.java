@@ -5,7 +5,6 @@ import lombok.*;
 import ru.practicum.model.event.SortType;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;

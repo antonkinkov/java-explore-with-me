@@ -84,12 +84,11 @@ public class RequestServiceImpl implements RequestService {
     public ParticipationRequestDto cancelRequest(Long userId, long requestId) {
         User user = findUserId(userId);
         Request request = findRequestId(requestId);
-
-        if(!user.getId().equals(request.getRequester().getId())) {
+        if (!user.getId().equals(request.getRequester().getId())) {
             throw new NotFoundException("Доступ запрещен.");
         }
 
-        if(!request.getStatus().equals(RequestStatus.CANCELED)) {
+        if (!request.getStatus().equals(RequestStatus.CANCELED)) {
             request.setStatus(RequestStatus.CANCELED);
             requestRepository.save(request);
         }

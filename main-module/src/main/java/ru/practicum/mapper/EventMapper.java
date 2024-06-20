@@ -7,7 +7,6 @@ import ru.practicum.dto.event.UpdateEventAdminRequest;
 import lombok.experimental.UtilityClass;
 import ru.practicum.model.category.Category;
 import ru.practicum.model.event.Event;
-import ru.practicum.model.event.Location;
 
 import java.util.ArrayList;
 import java.util.List;
