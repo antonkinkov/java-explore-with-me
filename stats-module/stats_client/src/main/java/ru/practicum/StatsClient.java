@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.dto.HitDto;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +17,11 @@ import java.util.Map;
 public class StatsClient extends BaseClient {
 
     @Autowired
-    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+//    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatsClient(RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:9090"))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
@@ -33,10 +35,11 @@ public class StatsClient extends BaseClient {
         Map<String, Object> params = Map.of(
                 "start", startDate,
                 "end", endDate,
-                "uris", String.join(",", uris),
+                "uris", List.of(String.join(",", uris)),
                 "unique", unique
         );
-        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", params);
+//        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", params);
+        return get("stats?start=2020-05-05%2000:00:00&end=2035-05-05%2000:00:00&uris=/events", params);
     }
 
 }

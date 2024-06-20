@@ -22,7 +22,7 @@ public class StatsController {
     public HitDto create(@Valid @RequestBody HitDto hitDto) {
         return statsService.create(hitDto);
     }
-
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @GetMapping("/stats")
     public List<StatsDto> getStats(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
