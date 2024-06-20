@@ -1,0 +1,45 @@
+package ru.practicum.dto.event;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import ru.practicum.dto.location.LocationDto;
+import lombok.*;
+import ru.practicum.model.event.StateAction;
+
+import javax.validation.constraints.Future;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class UpdateEventAdminRequest {
+    @Size(min = 20, max = 2000, message = "Размер анотации должен быть от 3-х до 120 символов.")
+    private String annotation;
+
+    private Long category;
+
+    @Size(min = 20, max = 7000, message = "Размер описания должен быть от 3-х до 120 символов.")
+    private String description;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Future(message = "Событие не может быть в прошлом")
+    private LocalDateTime eventDate;
+
+    private LocationDto location;
+
+    private Boolean paid;
+
+    @PositiveOrZero
+    private Integer participantLimit;
+
+    private Boolean requestModeration = true;
+
+    private StateAction stateAction;
+
+    @Size(min = 3, max = 120, message = "Размер заголовка должен быть от 3-х до 120 символов.")
+    private String title;
+}
