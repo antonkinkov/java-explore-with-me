@@ -26,9 +26,9 @@ private String rangeStart;
     private String rangeEnd;
 
     @PositiveOrZero
-    private int from = 0;
+    private final int from = 0;
 
     @Positive
-    private int size = 10;
+    private final int size = 10;
 
 }
