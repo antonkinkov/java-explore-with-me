@@ -280,8 +280,8 @@ public class EventServiceImpl implements EventService {
 //        if (Objects.isNull(eventAdminDto.getRangeStart())){
 //            eventAdminDto.setRangeStart(LocalDateTime.now().format(formatter));
 //        }
-        start = (eventAdminDto.getRangeStart() == null)? null : parseToLocalDateTime(eventAdminDto.getRangeStart());
-        end = (eventAdminDto.getRangeEnd() == null)? null : parseToLocalDateTime(eventAdminDto.getRangeEnd());
+        start = (eventAdminDto.getRangeStart() == null) ? null : parseToLocalDateTime(eventAdminDto.getRangeStart());
+        end = (eventAdminDto.getRangeEnd() == null) ? null : parseToLocalDateTime(eventAdminDto.getRangeEnd());
 
         if (Objects.nonNull(end) && Objects.nonNull(start)) {
             if (end.isBefore(start) || start.isEqual(end)) {
