@@ -58,7 +58,7 @@ public class EventMapper {
                 .build();
     }
 
-    public EventShortDto toEventShortDto(Event event) {
+    public static EventShortDto toEventShortDto(Event event) {
         EventShortDto shortDto = new EventShortDto();
         shortDto.setId(event.getId());
         shortDto.setAnnotation(event.getAnnotation());
