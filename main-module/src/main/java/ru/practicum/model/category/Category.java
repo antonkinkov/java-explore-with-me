@@ -1,9 +1,9 @@
 package ru.practicum.model.category;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-
-import lombok.*;
 
 @Getter
 @Setter

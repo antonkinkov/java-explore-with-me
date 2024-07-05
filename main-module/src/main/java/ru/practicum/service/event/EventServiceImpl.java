@@ -34,7 +34,6 @@ import ru.practicum.repository.User.UserRepository;
 import ru.practicum.specification.EventSpecification;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -338,7 +337,6 @@ public class EventServiceImpl implements EventService {
         return events.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
-
     @Transactional
     public EventFullDto updateEventAdmin(Long eventId, UpdateEventAdminRequest updateRequest) {
         Event event = findById(eventId);
@@ -373,7 +371,6 @@ public class EventServiceImpl implements EventService {
         return event.getCategory();
     }
 
-
     private void handleStateAction(UpdateEventAdminRequest updateRequest, Event event) {
         if (updateRequest.getStateAction() != null) {
 
@@ -390,7 +387,6 @@ public class EventServiceImpl implements EventService {
             }
         }
     }
-
 
     private Event findById(long eventId) {
         return eventRepository.findById(eventId)

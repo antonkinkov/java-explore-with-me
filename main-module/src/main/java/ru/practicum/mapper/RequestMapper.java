@@ -1,7 +1,7 @@
 package ru.practicum.mapper;
 
-import ru.practicum.dto.request.ParticipationRequestDto;
 import lombok.experimental.UtilityClass;
+import ru.practicum.dto.request.ParticipationRequestDto;
 import ru.practicum.model.request.Request;
 
 import java.util.List;
@@ -19,7 +19,6 @@ public class RequestMapper {
                 .created(request.getCreated())
                 .build();
     }
-
 
     public List<ParticipationRequestDto> toListDto(List<Request> participationRequestList) {
         return participationRequestList.stream()

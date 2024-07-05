@@ -1,8 +1,8 @@
 package ru.practicum.specification;
 
+import org.springframework.data.jpa.domain.Specification;
 import ru.practicum.model.request.Request;
 import ru.practicum.model.request.RequestStatus;
-import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;

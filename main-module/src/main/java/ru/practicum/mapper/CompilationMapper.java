@@ -1,11 +1,10 @@
 package ru.practicum.mapper;
 
-import ru.practicum.dto.compilation.CompilationDto;
 import lombok.experimental.UtilityClass;
+import ru.practicum.dto.compilation.CompilationDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.model.compilation.Compilation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

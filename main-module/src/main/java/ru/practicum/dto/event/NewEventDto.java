@@ -1,8 +1,11 @@
 package ru.practicum.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.dto.location.LocationDto;
-import lombok.*;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;

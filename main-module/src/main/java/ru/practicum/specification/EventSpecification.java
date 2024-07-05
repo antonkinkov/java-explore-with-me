@@ -1,13 +1,12 @@
 package ru.practicum.specification;
 
+import org.springframework.data.jpa.domain.Specification;
 import ru.practicum.model.event.Event;
 import ru.practicum.model.event.EventState;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-
 
 public class EventSpecification {
 

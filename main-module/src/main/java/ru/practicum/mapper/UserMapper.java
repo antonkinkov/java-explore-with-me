@@ -1,8 +1,8 @@
 package ru.practicum.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.dto.user.UserDto;
 import ru.practicum.dto.user.UserShortDto;
-import lombok.experimental.UtilityClass;
 import ru.practicum.model.user.User;
 
 import java.util.List;

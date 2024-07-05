@@ -1,8 +1,8 @@
 package ru.practicum.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import ru.practicum.dto.location.LocationDto;
 import lombok.*;
+import ru.practicum.dto.location.LocationDto;
 import ru.practicum.model.event.StateAction;
 
 import javax.validation.constraints.Future;

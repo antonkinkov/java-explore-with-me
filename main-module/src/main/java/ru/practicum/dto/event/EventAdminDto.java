@@ -31,5 +31,4 @@ private String rangeStart;
     @Positive
     private int size = 10;
 
-
 }

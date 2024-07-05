@@ -1,9 +1,11 @@
 package ru.practicum.service.request;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 import ru.practicum.dto.request.ParticipationRequestDto;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import ru.practicum.exception.ViolationException;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.event.Event;
@@ -11,8 +13,6 @@ import ru.practicum.model.event.EventState;
 import ru.practicum.model.request.Request;
 import ru.practicum.model.request.RequestStatus;
 import ru.practicum.model.user.User;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 import ru.practicum.repository.Event.EventRepository;
 import ru.practicum.repository.Request.RequestRepository;
 import ru.practicum.repository.User.UserRepository;
@@ -111,7 +111,6 @@ public class RequestServiceImpl implements RequestService {
         }
         return RequestMapper.toDto(request);
     }
-
 
     private Event findById(long eventId) {
         return eventRepository.findById(eventId)
