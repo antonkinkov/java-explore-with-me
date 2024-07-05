@@ -30,6 +30,7 @@ public class Compilation {
     private List<Event> events;
 
     @Column(name = "pinned", nullable = false)
+    @Builder.Default
     private Boolean pinned = false;
 
     @Column(name = "title", nullable = false)

@@ -26,7 +26,9 @@ public class EventFilterDto {
     private boolean onlyAvailable;
     private SortType sort;
     @PositiveOrZero
+    @Builder.Default
     private int from  = 0;
     @PositiveOrZero
+    @Builder.Default
     private int size = 10;
 }

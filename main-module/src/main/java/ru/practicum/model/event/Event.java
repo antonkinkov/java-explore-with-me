@@ -68,8 +68,10 @@ public class Event {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Builder.Default
     private Integer confirmedRequests = 0;
 
+    @Builder.Default
     private Integer views = 0;
 
 }
