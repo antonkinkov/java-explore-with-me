@@ -37,7 +37,7 @@ public class UpdateEventUserRequest {
     @PositiveOrZero
     private Integer participantLimit;
 
-    private final Boolean requestModeration = true;
+    private Boolean requestModeration = true;
 
     private StateAction stateAction;
 

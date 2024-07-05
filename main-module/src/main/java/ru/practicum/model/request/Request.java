@@ -30,6 +30,6 @@ public class Request {
     private User requester;
 
     @Enumerated(value = EnumType.STRING)
-    private final RequestStatus status = RequestStatus.CONFIRMED;
+    private RequestStatus status = RequestStatus.CONFIRMED;
 
 }

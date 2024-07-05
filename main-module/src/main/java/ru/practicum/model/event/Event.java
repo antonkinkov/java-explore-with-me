@@ -68,8 +68,8 @@ public class Event {
     @Column(name = "title", nullable = false)
     private String title;
 
-    private final Integer confirmedRequests = 0;
+    private Integer confirmedRequests = 0;
 
-    private final Integer views = 0;
+    private Integer views = 0;
 
 }

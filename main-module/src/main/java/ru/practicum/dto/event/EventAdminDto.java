@@ -20,15 +20,15 @@ public class EventAdminDto {
     private List<Long> categories;
 
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-private String rangeStart;
+    private String rangeStart;
 
     //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String rangeEnd;
 
     @PositiveOrZero
-    private final int from = 0;
+    private int from = 0;
 
     @Positive
-    private final int size = 10;
+    private int size = 10;
 
 }
