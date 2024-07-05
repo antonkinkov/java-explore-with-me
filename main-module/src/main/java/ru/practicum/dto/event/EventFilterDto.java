@@ -22,14 +22,14 @@ public class EventFilterDto {
     private String text;
     private List<Long> categories;
     private Boolean paid;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime rangeStart;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime rangeEnd;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String rangeStart;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String rangeEnd;
     private boolean onlyAvailable;
     private SortType sort;
     @PositiveOrZero
-    private int from;
+    private int from  = 0;
     @PositiveOrZero
     private int size = 10;
 }

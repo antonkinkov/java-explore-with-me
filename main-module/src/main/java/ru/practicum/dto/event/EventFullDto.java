@@ -41,4 +41,5 @@ public class EventFullDto {
     private EventState eventState;
     private String title;
     private Integer views;
+    private EventState state;
 }

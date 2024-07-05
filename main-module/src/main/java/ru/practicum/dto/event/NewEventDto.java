@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class NewEventDto {
 
@@ -21,6 +22,7 @@ public class NewEventDto {
     private Long category;
 
     @NotBlank
+    @NotNull
     @Size(min = 20, max = 7000, message = "Размер описания должен быть я от 20 до 7000 символов.")
     private String description;
 
@@ -36,7 +38,7 @@ public class NewEventDto {
     @PositiveOrZero
     private int participantLimit;
 
-    private boolean requestModeration;
+    private boolean requestModeration = true;
 
     @NotBlank(message = "Заголовок должен быть пустым")
     @Size(min = 3, max = 120, message = "Размер заголовка должен быть от 3-х до 120 символов.")

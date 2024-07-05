@@ -23,7 +23,6 @@ public class AdminEventController {
 
     private final EventService eventService;
 
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EventFullDto> getEvents(@Valid @ModelAttribute EventAdminDto eventAdminDto) {

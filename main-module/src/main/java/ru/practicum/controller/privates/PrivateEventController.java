@@ -1,5 +1,10 @@
 package ru.practicum.controller.privates;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.dto.event.NewEventDto;
@@ -7,11 +12,7 @@ import ru.practicum.dto.event.UpdateEventUserRequest;
 import ru.practicum.dto.request.EventRequestStatusUpdateRequest;
 import ru.practicum.dto.request.EventRequestStatusUpdateResult;
 import ru.practicum.dto.request.ParticipationRequestDto;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import ru.practicum.exception.ViolationException;
 import ru.practicum.service.event.EventService;
 
 import javax.validation.Valid;
@@ -40,7 +41,7 @@ public class PrivateEventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto postEvent(@PathVariable("userId") Long userId,
-                                   @RequestBody NewEventDto newEventDto) {
+                                  @Valid @RequestBody NewEventDto newEventDto) {
         log.info("Private: Добавление нового события newEvent = {}.", newEventDto);
         return eventService.createEvent(userId, newEventDto);
     }
@@ -75,12 +76,14 @@ public class PrivateEventController {
     @ResponseStatus(HttpStatus.OK)
     public EventRequestStatusUpdateResult updateRequestsStatus(@Positive @PathVariable Long userId,
                                                                @Positive @PathVariable Long eventId,
-                                                               @Valid @RequestBody EventRequestStatusUpdateRequest
+                                                               @Valid @RequestBody(required = false) EventRequestStatusUpdateRequest
                                                                        eventRequestStatusUpdateRequest) {
 
         log.info("Обновление статуса заявок на участие в событии текущего пользователя." +
                 "userId = {}, eventId = {}, тело запроса: = {}", userId, eventId, eventRequestStatusUpdateRequest);
-
+            if (eventRequestStatusUpdateRequest == null) {
+                throw new ViolationException("");
+            }
         return eventService.updateRequestStatus(userId, eventId, eventRequestStatusUpdateRequest);
     }
 }

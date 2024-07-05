@@ -1,16 +1,17 @@
 package ru.practicum.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.dto.event.NewEventDto;
 import ru.practicum.dto.event.UpdateEventAdminRequest;
-import lombok.experimental.UtilityClass;
+import ru.practicum.dto.location.LocationDto;
 import ru.practicum.model.category.Category;
 import ru.practicum.model.event.Event;
-import ru.practicum.model.event.Location;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,18 +24,21 @@ public class EventMapper {
                 .description(event.getDescription())
                 .annotation(event.getAnnotation())
                 .category((CategoryMapper.toDto(event.getCategory())))
-                .confirmedRequests(event.getConfirmedRequests())
+                .confirmedRequests(Objects.isNull(event.getConfirmedRequests()) ? 0 : event.getConfirmedRequests())
                 .createdOn(event.getCreatedOn())
                 .eventDate(event.getEventDate())
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
-//                .location(event.getLocation())
+                .location(LocationDto.builder()
+                        .lat(event.getLat())
+                        .lon(event.getLon())
+                        .build())
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .publishedOn(event.getPublishedOn())
                 .requestModeration(event.getRequestModeration())
-//                .state(event.getState())
+                .state(event.getState())
                 .title(event.getTitle())
-//                .views(event.getViews())
+                .views(event.getViews())
                 .build();
     }
 
@@ -49,6 +53,7 @@ public class EventMapper {
                 .participantLimit(newEventDto.getParticipantLimit())
                 .requestModeration(newEventDto.isRequestModeration())
                 .title(newEventDto.getTitle())
+                .confirmedRequests(0)
                 .annotation(newEventDto.getAnnotation())
                 .build();
     }

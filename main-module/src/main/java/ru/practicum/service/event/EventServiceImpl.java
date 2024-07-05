@@ -1,5 +1,14 @@
 package ru.practicum.service.event;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.StatsClient;
+import ru.practicum.dto.StatsDto;
 import ru.practicum.dto.event.*;
 import ru.practicum.dto.request.EventRequestStatusUpdateRequest;
 import ru.practicum.dto.request.EventRequestStatusUpdateResult;
@@ -9,7 +18,6 @@ import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.InvalidException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.ValidationException;
-import lombok.RequiredArgsConstructor;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.category.Category;
@@ -19,22 +27,16 @@ import ru.practicum.model.event.StateAction;
 import ru.practicum.model.request.Request;
 import ru.practicum.model.request.RequestStatus;
 import ru.practicum.model.user.User;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.repository.Categories.CategoriesRepository;
 import ru.practicum.repository.Event.EventRepository;
 import ru.practicum.repository.Request.RequestRepository;
 import ru.practicum.repository.User.UserRepository;
-import ru.practicum.StatsClient;
-import ru.practicum.dto.StatsDto;
 import ru.practicum.specification.EventSpecification;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,12 +56,21 @@ public class EventServiceImpl implements EventService {
     private final RequestRepository requestRepository;
     private final StatsClient statsClient;
     private final CategoriesRepository categoryRepository;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public List<EventShortDto> getEventsByFilter(EventFilterDto filter) {
 
-        LocalDateTime start = Objects.isNull(filter.getRangeStart()) ? LocalDateTime.now() : filter.getRangeStart();
-        LocalDateTime end = Objects.isNull(filter.getRangeEnd()) ? LocalDateTime.now().plusYears(100) : filter.getRangeEnd();
+//        LocalDateTime start1 = Objects.isNull(filter.getRangeStart()) ? LocalDateTime.now() : filter.getRangeStart();
+//        LocalDateTime end2 = Objects.isNull(filter.getRangeEnd()) ? LocalDateTime.now().plusYears(100) : filter.getRangeEnd();
+
+        LocalDateTime start = LocalDateTime.now().minusYears(10);
+        LocalDateTime end = LocalDateTime.now().plusYears(100);
+
+        if (Objects.nonNull(filter.getRangeStart()) && Objects.nonNull(filter.getRangeEnd())) {
+            start = LocalDateTime.parse(filter.getRangeStart(), formatter);
+            end = LocalDateTime.parse(filter.getRangeEnd(), formatter);
+        }
 
         if (end.isBefore(start) || start.isEqual(end)) {
             throw new InvalidException("Не правильное время начала и конца");
@@ -73,19 +84,20 @@ public class EventServiceImpl implements EventService {
 
         Pageable pageable = PageRequest.of(filter.getFrom(), filter.getSize(), sort);
         Specification<Event> specification = Specification.where(
-                EventSpecification.hasStateIn(List.of(EventState.PUBLISHED))
+                EventSpecification.hasStateIn(new ArrayList<>(EventState.PUBLISHED.ordinal()))
                         .and(EventSpecification.hasCategoryIn(filter.getCategories()))
                         .and(EventSpecification.hasStartDate(start))
                         .and(EventSpecification.hasEndDate(end))
                         .and(EventSpecification.hasPaidIn(filter.getPaid()))
-                        .and(EventSpecification.hasAvailableIn(filter.isOnlyAvailable()))
-                        .and(EventSpecification.hasTextIn(filter.getText())));
+//                        .and(EventSpecification.hasAvailableIn(filter.isOnlyAvailable()))
+                        .and(EventSpecification.hasTextIn(filter.getText()))
+        );
 
         List<Event> events = eventRepository.findAll(specification, pageable).getContent();
 
-        List<StatsDto> statistics = (List<StatsDto>) statsClient.getStatistic(
-                String.valueOf(start),
-                String.valueOf(end),
+        List<StatsDto> statistics = statsClient.getStatistic(
+                start,
+                end,
                 EventMapper.toUrls(events),
                 Boolean.TRUE
         );
@@ -115,14 +127,16 @@ public class EventServiceImpl implements EventService {
         EventFullDto eventDto = EventMapper.toEventFullDto(event);
 
         List<StatsDto> statistics = (List<StatsDto>) statsClient.getStatistic(
-                String.valueOf(LocalDateTime.now().minusYears(100)),
-                String.valueOf(LocalDateTime.now().plusYears(100)),
+                LocalDateTime.now().minusYears(100),
+                LocalDateTime.now().plusYears(100),
                 List.of("/events/" + eventId),
                 Boolean.TRUE
         );
 
         if (!statistics.isEmpty()) {
             eventDto.setViews(statistics.get(0).getHits());
+        } else {
+            eventDto.setViews(1);
         }
 
         return eventDto;
@@ -250,7 +264,7 @@ public class EventServiceImpl implements EventService {
         User user = findUserId(userId);
         Specification<Event> specification = Specification.where(
                 EventSpecification.hasIdIn(eventId)
-                        .and(EventSpecification.hasUserIn(List.of(user.getId()))));
+                        .and(EventSpecification.hasUserIn(new ArrayList<>(Math.toIntExact(user.getId())))));
 
         return eventRepository.findOne(specification)
                 .orElseThrow(() -> new NotFoundException("Event not found with id: " + eventId));
@@ -258,20 +272,32 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventFullDto> getEventsByAdmin(EventAdminDto eventAdminDto) {
-        LocalDateTime start = eventAdminDto.getRangeStart();
-        LocalDateTime end = eventAdminDto.getRangeEnd();
 
-        if (end.isBefore(start) || start.isEqual(end)) {
-            throw new InvalidException("Не правильное время начала и конца");
+        LocalDateTime start;
+        LocalDateTime end;
+//        if (Objects.isNull(eventAdminDto.getRangeEnd())) {
+//            eventAdminDto.setRangeEnd(LocalDateTime.now().plusMinutes(5).format(formatter));
+//        }
+//        if (Objects.isNull(eventAdminDto.getRangeStart())){
+//            eventAdminDto.setRangeStart(LocalDateTime.now().format(formatter));
+//        }
+        start = (eventAdminDto.getRangeStart() == null)? null : parseToLocalDateTime(eventAdminDto.getRangeStart());
+        end = (eventAdminDto.getRangeEnd() == null)? null : parseToLocalDateTime(eventAdminDto.getRangeEnd());
+
+        if (Objects.nonNull(end) && Objects.nonNull(start)) {
+            if (end.isBefore(start) || start.isEqual(end)) {
+                throw new InvalidException("Не правильное время начала и конца");
+            }
         }
 
         Pageable pageable = PageRequest.of(eventAdminDto.getFrom(), eventAdminDto.getSize());
         Specification<Event> specification = Specification.where(
-                EventSpecification.hasStartDate(eventAdminDto.getRangeStart())
+                EventSpecification.hasStartDate(start)
                         .and(EventSpecification.hasEndDate(end))
                         .and(EventSpecification.hasStateIn(eventAdminDto.getStates()))
                         .and(EventSpecification.hasUserIn(eventAdminDto.getUsers()))
-                        .and(EventSpecification.hasCategoryIn(eventAdminDto.getCategories())));
+                        .and(EventSpecification.hasCategoryIn(eventAdminDto.getCategories()))
+        );
 
         List<Event> events = eventRepository.findAll(specification, pageable).getContent();
         List<Long> eventIds = events.stream()
@@ -283,10 +309,10 @@ public class EventServiceImpl implements EventService {
         Map<Long, Long> requestCountDtoMap = requests.stream()
                 .collect(Collectors.toMap(RequestCountDto::getEventId, RequestCountDto::getRequestCount));
 
-        List<StatsDto> stat = (List<StatsDto>) statsClient.getStatistic(LocalDateTime.now().minusYears(20).toString(), LocalDateTime.now().plusYears(100).toString(),
+        List<StatsDto> stat = (List<StatsDto>) statsClient.getStatistic(LocalDateTime.now().minusYears(20), LocalDateTime.now().plusYears(100),
                 EventMapper.toUrls(events), Boolean.TRUE);
         Map<String, StatsDto> statsMap = stat.stream()
-                .collect(Collectors.toMap(StatsDto::getUri, statsHitDto -> statsHitDto));
+                .collect(Collectors.toMap(StatsDto::getUri, statsHitDto -> statsHitDto, (l, r) -> l));
 
         for (Event event : events) {
             if (!requestCountDtoMap.isEmpty()) {
@@ -308,7 +334,7 @@ public class EventServiceImpl implements EventService {
                 event.setViews(0);
             }
         }
-
+        System.out.println("Events = " + events);
         return events.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
@@ -316,7 +342,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public EventFullDto updateEventAdmin(Long eventId, UpdateEventAdminRequest updateRequest) {
         Event event = findById(eventId);
-        try {
+       // try {
             Category category = getCategory(updateRequest, event);
 
             if (updateRequest.getEventDate() != null && updateRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(1))) {
@@ -333,9 +359,9 @@ public class EventServiceImpl implements EventService {
             handleStateAction(updateRequest, event);
 
             EventMapper.updateEventFromRequest(event, updateRequest, category);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
 
         return EventMapper.toEventFullDto(eventRepository.save(event));
     }
@@ -379,5 +405,14 @@ public class EventServiceImpl implements EventService {
     private Category findCategoryId(long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("Category not found with id:" + categoryId));
+    }
+
+    private LocalDateTime parseToLocalDateTime(String date) {
+
+        try {
+            return LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        } catch (Exception e) {
+            throw new RuntimeException("Неверный формат даты: " + date);
+        }
     }
 }

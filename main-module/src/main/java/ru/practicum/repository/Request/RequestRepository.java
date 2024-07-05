@@ -25,4 +25,5 @@ public interface RequestRepository extends JpaRepository<Request, Long>, JpaSpec
             "ORDER BY COUNT(r.id) DESC")
     List<RequestCountDto> findRequestCountsByEventIdsAndStatus(@Param("ids") List<Long> ids, @Param("status") RequestStatus status);
 
+    List<Request> findAllByEventIdAndStatus(Long eventId, RequestStatus requestStatus);
 }

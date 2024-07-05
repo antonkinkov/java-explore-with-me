@@ -81,7 +81,7 @@ public class EventSpecification {
     public static Specification<Event> hasUserIn(List<Long> userIds) {
         return (((root, query, criteriaBuilder) -> {
             if (Objects.isNull(userIds) || userIds.isEmpty()) return null;
-            return criteriaBuilder.equal(root.get("initiator").get("id"), userIds);
+            return root.get("initiator").get("id").in(userIds);
         }));
     }
 }

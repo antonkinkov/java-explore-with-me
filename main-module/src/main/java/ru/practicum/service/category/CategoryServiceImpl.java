@@ -1,19 +1,20 @@
 package ru.practicum.service.category;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.category.CategoryDto;
 import ru.practicum.dto.category.NewCategoryDto;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import ru.practicum.mapper.CategoryMapper;
 import ru.practicum.model.category.Category;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.repository.Categories.CategoriesRepository;
 import ru.practicum.repository.Event.EventRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +47,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto create(NewCategoryDto newCategoryDto) {
-
         Category existingCategory = categoriesRepository.findFirstByName(newCategoryDto.getName());
 
         if (existingCategory != null) {
@@ -60,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void delete(Long catId) {
-        categoriesRepository.delete(findById(catId));
+            categoriesRepository.delete(findById(catId));
     }
 
     @Override
@@ -68,7 +68,8 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto update(Long catId, CategoryDto categoryDto) {
         Category category = findById(catId);
         Category existingCategory = categoriesRepository.findFirstByName(categoryDto.getName());
-        if (existingCategory != null) {
+        boolean isCurrent = existingCategory != null && existingCategory.getName().equals(categoryDto.getName()) && Objects.equals(catId, existingCategory.getId());
+        if (!isCurrent  &&  existingCategory != null) {
             throw new ConflictException("Категория с таким именем уже существует");
         }
         category.setName(categoryDto.getName());

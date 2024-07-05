@@ -79,13 +79,15 @@ public class CompilationServiceImpl implements CompilationService {
     public CompilationDto update(Long compId, UpdateCompilationRequest updateCompilationRequest) {
         Compilation compilation = findCompilationById(compId);
 
-        compilation.setTitle(updateCompilationRequest.getTitle());
-        compilation.setPinned(updateCompilationRequest.getPinned());
-
+        if (updateCompilationRequest.getTitle() != null) {
+            compilation.setTitle(updateCompilationRequest.getTitle());
+        }
+        if (updateCompilationRequest.getPinned() != null) {
+            compilation.setPinned(updateCompilationRequest.getPinned());
+        }
         if (updateCompilationRequest.getEvents() != null) {
             compilation.setEvents(eventRepository.findAllById(updateCompilationRequest.getEvents()));
         }
-
         return CompilationMapper.toDto(compilationRepository.save(compilation));
     }
 

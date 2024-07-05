@@ -30,7 +30,7 @@ public class Compilation {
     private List<Event> events;
 
     @Column(name = "pinned", nullable = false)
-    private Boolean pinned;
+    private Boolean pinned = false;
 
     @Column(name = "title", nullable = false)
     private String title;

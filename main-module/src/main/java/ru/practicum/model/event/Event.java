@@ -70,7 +70,7 @@ public class Event {
     @Column(name = "title", nullable = false)
     private String title;
 
-    private Integer confirmedRequests;
+    private Integer confirmedRequests = 0;
 
     private Integer views = 0;
 

@@ -4,6 +4,7 @@ import ru.practicum.dto.request.ParticipationRequestDto;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import ru.practicum.exception.ViolationException;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.event.Event;
 import ru.practicum.model.event.EventState;
@@ -18,6 +19,7 @@ import ru.practicum.repository.User.UserRepository;
 import ru.practicum.specification.EventSpecification;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +45,19 @@ public class RequestServiceImpl implements RequestService {
         User user = findUserId(userId);
         Specification<Event> specification = Specification.where(
                 EventSpecification.hasIdIn(eventId)
-                        .and(EventSpecification.hasUserIn(List.of(user.getId()))));
+                        .and(EventSpecification.hasUserIn(new ArrayList<>(Math.toIntExact(user.getId())))));
 
         Event event = eventRepository.findOne(specification)
                 .orElseThrow(() -> new NotFoundException("Event not found with id: " + eventId));
+//        if (event.getParticipantLimit().equals(event.getConfirmedRequests())) {
+//            throw new ViolationException("Превышено количество запросов");
+//        }
+        if (event.getInitiator().getId().equals(userId)){
+            throw new ViolationException("Инициатор не может делать запрос на принятие участия в своём событии.");
+        }
 
+        System.out.println("limit = " + event.getParticipantLimit());
+        System.out.println("Confirmed = " + event.getConfirmedRequests());
         List<Request> requests = requestRepository.findAllByRequester(user);
 
         if (!requests.isEmpty()) {
@@ -58,7 +68,9 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("Нельзя участвовать в неопубликованном событии");
         }
 
-        if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
+//        int requestCount = requestRepository.findAllByEventIdAndStatus(eventId, RequestStatus.CONFIRMED).size();
+        int requestCount = requestRepository.findAllByEventId(eventId).size();
+        if (requestCount >= event.getParticipantLimit() && event.getParticipantLimit() > 0) {
             throw new ConflictException("У события достигнут лимит запросов на участие");
         }
 
@@ -70,8 +82,13 @@ public class RequestServiceImpl implements RequestService {
         if (!event.getRequestModeration()) {
             request.setStatus(RequestStatus.CONFIRMED);
             event.setParticipantLimit(event.getParticipantLimit() + 1);
-        } else {
-            request.setStatus(RequestStatus.PENDING);
+        }
+        else {
+            if (event.getParticipantLimit() == 0) {
+                request.setStatus(RequestStatus.CONFIRMED);
+            } else {
+                request.setStatus(RequestStatus.PENDING);
+            }
         }
 
         requestRepository.save(request);

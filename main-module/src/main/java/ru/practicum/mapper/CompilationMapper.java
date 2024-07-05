@@ -2,19 +2,24 @@ package ru.practicum.mapper;
 
 import ru.practicum.dto.compilation.CompilationDto;
 import lombok.experimental.UtilityClass;
+import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.model.compilation.Compilation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class CompilationMapper {
-
     public static CompilationDto toDto(Compilation compilation) {
+        List<EventShortDto> eventShorts = compilation.getEvents().stream()
+                .map(EventMapper::toEventShortDto)
+                .collect(Collectors.toList());
+
         return CompilationDto.builder()
                 .id(compilation.getId())
                 .pinned(compilation.getPinned())
-//                .events(EventMapper.toDtoList(compilation.getEvents()))
+                .events(eventShorts)
                 .title(compilation.getTitle())
                 .build();
     }
