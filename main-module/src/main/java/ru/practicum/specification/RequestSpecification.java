@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RequestSpecification {
 
-    public static Specification<Request> findByEventIdsAndStatus(List<Long> ids, RequestStatus status){
+    public static Specification<Request> findByEventIdsAndStatus(List<Long> ids, RequestStatus status) {
         return ((root, query, criteriaBuilder) -> {
             Predicate eventsIdsPredicate = root.get("event").get("id").in(ids);
             Predicate statusPredicate = criteriaBuilder.equal(root.get("status"), status);

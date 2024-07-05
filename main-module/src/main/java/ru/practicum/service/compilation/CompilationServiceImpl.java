@@ -95,6 +95,7 @@ public class CompilationServiceImpl implements CompilationService {
         return compilationRepository.findById(comId)
                 .orElseThrow(() -> new NotFoundException("Compilation not found with id:" + comId));
     }
+
     public Event findEventById(long eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event not found with id: " + eventId));

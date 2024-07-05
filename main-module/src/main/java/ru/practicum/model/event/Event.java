@@ -1,7 +1,6 @@
 package ru.practicum.model.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import ru.practicum.dto.request.ParticipationRequestDto;
 import lombok.*;
 import ru.practicum.model.category.Category;
 import ru.practicum.model.user.User;
@@ -9,7 +8,6 @@ import ru.practicum.model.user.User;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
