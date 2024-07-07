@@ -25,19 +25,19 @@ public class StatsController {
 
     //    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @GetMapping("/stats")
-    public List<StatsDto> getStats(@RequestParam String start,
-                                   @RequestParam String end,
+    public List<StatsDto> getStats(@RequestParam LocalDateTime start,
+                                   @RequestParam LocalDateTime end,
                                    @RequestParam(required = false) List<String> uris,
                                    @RequestParam(defaultValue = "false") Boolean unique) {
 
-        return statsService.getStats(parseToLocalDateTime(start), parseToLocalDateTime(end), uris, unique);
+        return statsService.getStats(start, end, uris, unique);
     }
 
-    private LocalDateTime parseToLocalDateTime(String date) {
-        try {
-            return LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        } catch (Exception e) {
-            throw new RuntimeException("Неверный формат даты: " + date);
-        }
-    }
+//    private LocalDateTime parseToLocalDateTime(String date) {
+//        try {
+//            return LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        } catch (Exception e) {
+//            throw new RuntimeException("Неверный формат даты: " + date);
+//        }
+//    }
 }
