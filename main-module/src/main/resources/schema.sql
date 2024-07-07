@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS events (
   participant_limit INTEGER NOT NULL,
   published_on TIMESTAMP WITHOUT TIME ZONE,
   request_moderation BOOLEAN NOT NULL,
-  state VARCHAR(64) NOT NULL,
+  state INTEGER NOT NULL,
   title VARCHAR(120) NOT NULL,
   confirmed_requests INTEGER NOT NULL,
   views BIGINT NOT NULL,
