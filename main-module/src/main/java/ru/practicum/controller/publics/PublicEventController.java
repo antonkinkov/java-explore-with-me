@@ -26,7 +26,7 @@ public class PublicEventController {
     private final EventService eventService;
     private final StatsClient statsClient;
 
-    @GetMapping
+    @GetMapping("/ddd")
     public List<EventShortDto> findSearchByFilter(@ModelAttribute EventFilterDto eventFilterDto) {
         return eventService.getEventsByFilter(eventFilterDto);
     }

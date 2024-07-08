@@ -29,8 +29,8 @@ public class StatsController {
                                    @RequestParam String end,
                                    @RequestParam(required = false) List<String> uris,
                                    @RequestParam(defaultValue = "false") Boolean unique) {
-
-        return statsService.getStats(parseToLocalDateTime(start), parseToLocalDateTime(end), uris, unique);
+        System.out.println("!!!!!=========");
+        return statsService.getStats(parseToLocalDateTime(start),parseToLocalDateTime(end), uris, unique);
     }
 
     private LocalDateTime parseToLocalDateTime(String date) {

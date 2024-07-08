@@ -60,8 +60,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> getEventsByFilter(EventFilterDto filter) {
 
-//        LocalDateTime start1 = Objects.isNull(filter.getRangeStart()) ? LocalDateTime.now() : filter.getRangeStart();
-//        LocalDateTime end2 = Objects.isNull(filter.getRangeEnd()) ? LocalDateTime.now().plusYears(100) : filter.getRangeEnd();
+//        LocalDateTime start1 = Objects.isNull(filter.getRangeStart()) ? LocalDateTime.now() :
+//                parseToLocalDateTime(filter.getRangeStart());
+//        LocalDateTime end2 = Objects.isNull(filter.getRangeEnd()) ? LocalDateTime.now().plusYears(100) :
+//                parseToLocalDateTime(filter.getRangeEnd());
 
         LocalDateTime start = LocalDateTime.now().minusYears(10);
         LocalDateTime end = LocalDateTime.now().plusYears(100);
