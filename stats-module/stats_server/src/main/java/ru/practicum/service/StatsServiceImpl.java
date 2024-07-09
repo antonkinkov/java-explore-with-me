@@ -1,9 +1,7 @@
 package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.practicum.dto.HitDto;
 import ru.practicum.dto.StatsDto;
 import ru.practicum.exception.InvalidTimeParamException;
@@ -22,7 +20,6 @@ public class StatsServiceImpl implements StatsService {
     private final StatsRepository repository;
 
     @Override
-    @ResponseStatus(HttpStatus.CREATED)
     public HitDto create(HitDto hitDto) {
         repository.save(StatsMapper.toEndpointHit(hitDto));
         return hitDto;
