@@ -25,7 +25,6 @@ public class StatsController {
         return statsService.create(hitDto);
     }
 
-    //    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @GetMapping("/stats")
     public List<StatsDto> getStats(@RequestParam String start,
                                    @RequestParam String end,

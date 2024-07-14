@@ -49,9 +49,6 @@ public class RequestServiceImpl implements RequestService {
 
         Event event = eventRepository.findOne(specification)
                 .orElseThrow(() -> new NotFoundException("Event not found with id: " + eventId));
-//        if (event.getParticipantLimit().equals(event.getConfirmedRequests())) {
-//            throw new ViolationException("Превышено количество запросов");
-//        }
         if (event.getInitiator().getId().equals(userId)) {
             throw new ViolationException("Инициатор не может делать запрос на принятие участия в своём событии.");
         }
@@ -68,7 +65,6 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("Нельзя участвовать в неопубликованном событии");
         }
 
-//        int requestCount = requestRepository.findAllByEventIdAndStatus(eventId, RequestStatus.CONFIRMED).size();
         int requestCount = requestRepository.findAllByEventId(eventId).size();
         if (requestCount >= event.getParticipantLimit() && event.getParticipantLimit() > 0) {
             throw new ConflictException("У события достигнут лимит запросов на участие");

@@ -18,11 +18,7 @@ public class EventAdminDto {
     private List<Long> users;
     private List<EventState> states;
     private List<Long> categories;
-
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String rangeStart;
-
-    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String rangeEnd;
 
     @PositiveOrZero

@@ -60,11 +60,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> getEventsByFilter(EventFilterDto filter) {
 
-//        LocalDateTime start1 = Objects.isNull(filter.getRangeStart()) ? LocalDateTime.now() :
-//                parseToLocalDateTime(filter.getRangeStart());
-//        LocalDateTime end2 = Objects.isNull(filter.getRangeEnd()) ? LocalDateTime.now().plusYears(100) :
-//                parseToLocalDateTime(filter.getRangeEnd());
-
         LocalDateTime start = LocalDateTime.now().minusYears(10);
         LocalDateTime end = LocalDateTime.now().plusYears(100);
 
@@ -90,7 +85,6 @@ public class EventServiceImpl implements EventService {
                         .and(EventSpecification.hasStartDate(start))
                         .and(EventSpecification.hasEndDate(end))
                         .and(EventSpecification.hasPaidIn(filter.getPaid()))
-//                        .and(EventSpecification.hasAvailableIn(filter.isOnlyAvailable()))
                         .and(EventSpecification.hasTextIn(filter.getText()))
         );
 
@@ -276,12 +270,6 @@ public class EventServiceImpl implements EventService {
 
         LocalDateTime start;
         LocalDateTime end;
-//        if (Objects.isNull(eventAdminDto.getRangeEnd())) {
-//            eventAdminDto.setRangeEnd(LocalDateTime.now().plusMinutes(5).format(formatter));
-//        }
-//        if (Objects.isNull(eventAdminDto.getRangeStart())){
-//            eventAdminDto.setRangeStart(LocalDateTime.now().format(formatter));
-//        }
         start = (eventAdminDto.getRangeStart() == null) ? null : parseToLocalDateTime(eventAdminDto.getRangeStart());
         end = (eventAdminDto.getRangeEnd() == null) ? null : parseToLocalDateTime(eventAdminDto.getRangeEnd());
 
@@ -342,7 +330,6 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public EventFullDto updateEventAdmin(Long eventId, UpdateEventAdminRequest updateRequest) {
         Event event = findById(eventId);
-       // try {
             Category category = getCategory(updateRequest, event);
 
             if (updateRequest.getEventDate() != null && updateRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(1))) {
@@ -359,9 +346,6 @@ public class EventServiceImpl implements EventService {
             handleStateAction(updateRequest, event);
 
             EventMapper.updateEventFromRequest(event, updateRequest, category);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
 
         return EventMapper.toEventFullDto(eventRepository.save(event));
     }
