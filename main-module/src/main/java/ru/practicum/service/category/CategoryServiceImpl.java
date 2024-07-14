@@ -14,7 +14,7 @@ import ru.practicum.repository.Categories.CategoriesRepository;
 import ru.practicum.repository.Event.EventRepository;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,14 +47,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto create(NewCategoryDto newCategoryDto) {
-        Category existingCategory = categoriesRepository.findFirstByName(newCategoryDto.getName());
+        Optional<Category> existingCategory = categoriesRepository.findFirstByName(newCategoryDto.getName());
 
-        if (existingCategory != null) {
+        if (existingCategory.isPresent()) {
             throw new ConflictException("Категория с таким именем уже существует");
         }
 
         Category category = categoriesRepository.save(new Category(newCategoryDto.getName()));
-        return new CategoryDto(category.getId(),category.getName());
+        return new CategoryDto(category.getId(), category.getName());
     }
 
     @Override
@@ -67,11 +67,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CategoryDto update(Long catId, CategoryDto categoryDto) {
         Category category = findById(catId);
-        Category existingCategory = categoriesRepository.findFirstByName(categoryDto.getName());
-        boolean isCurrent = existingCategory != null && existingCategory.getName().equals(categoryDto.getName()) && Objects.equals(catId, existingCategory.getId());
-        if (!isCurrent  &&  existingCategory != null) {
+
+        Optional<Category> existingCategory = categoriesRepository.findFirstByName(categoryDto.getName());
+        if (existingCategory.isPresent() && !existingCategory.get().getId().equals(catId)) {
             throw new ConflictException("Категория с таким именем уже существует");
         }
+
         category.setName(categoryDto.getName());
         return CategoryMapper.toDto(category);
     }
