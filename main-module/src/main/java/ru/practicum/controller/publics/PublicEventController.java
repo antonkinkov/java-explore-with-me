@@ -26,8 +26,21 @@ public class PublicEventController {
     private final EventService eventService;
     private final StatsClient statsClient;
 
+//    @GetMapping
+//    public List<EventShortDto> findSearchByFilter(@ModelAttribute EventFilterDto eventFilterDto) {
+//        return eventService.getEventsByFilter(eventFilterDto);
+//    }
+
     @GetMapping
-    public List<EventShortDto> findSearchByFilter(@ModelAttribute EventFilterDto eventFilterDto) {
+    public List<EventShortDto> findSearchByFilter(HttpServletRequest httpServletRequest,
+                                                  @ModelAttribute EventFilterDto eventFilterDto) {
+        log.info("Public: Получить события по фильтру: {}", eventFilterDto.toString());
+        statsClient.addStatistic(
+                new HitDto("main-module",
+                        "/events",
+                        httpServletRequest.getRemoteAddr(),
+                        LocalDateTime.now()
+                ));
         return eventService.getEventsByFilter(eventFilterDto);
     }
 
