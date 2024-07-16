@@ -29,7 +29,7 @@ public class PrivateCommentController {
     }
 
     @GetMapping("/{commentId}")
-    public CommentDto getCommentByCommentId(@PathVariable Long commentId ) {
+    public CommentDto getCommentByCommentId(@PathVariable Long commentId) {
         log.info("Private: Получение комментария с ID = {}.", commentId);
         return commentService.getComment(commentId);
     }
