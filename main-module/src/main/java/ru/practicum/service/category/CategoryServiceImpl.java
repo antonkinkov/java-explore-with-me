@@ -53,7 +53,10 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ConflictException("Категория с таким именем уже существует");
         }
 
-        Category category = categoriesRepository.save(new Category(newCategoryDto.getName()));
+        Category categoryEntity = new Category();
+        categoryEntity.setName(newCategoryDto.getName());
+
+        Category category = categoriesRepository.save(categoryEntity);
         return new CategoryDto(category.getId(), category.getName());
     }
 
